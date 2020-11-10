@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Beeater.Api.Beeater.Domain.Entities
+namespace Beeater.Domain.Entities
 {
     public partial class Authorization
     {
