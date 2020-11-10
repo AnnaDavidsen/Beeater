@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Beeater.Domain.Entities.Authorization">
+    <Position X="1.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAIAIAAAAAAAAACAABAAAAAAAAACCAAAA=</HashCode>
+      <FileName>Entities\Authorization.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Beeater.Domain.Entities.Booking">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgDAAAAAAAAAAAAAAAAQAgAAAAEAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Entities\Booking.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Beeater.Domain.Entities.Employee">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAUAAACAAAEAIIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Employee.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Beeater.Domain.Entities.Genre">
+    <Position X="1.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Entities\Genre.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Beeater.Domain.Entities.Movie">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAKIEAAAgIAAABAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Entities\Movie.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Beeater.Domain.Entities.Preference">
+    <Position X="6" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAIAAAAAIAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Preference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Beeater.Domain.Entities.Rating">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADgAAAAAAAEAAAAAAAAAgAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Rating.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Beeater.Domain.Entities.Seat">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAABAAgAAAAAEAAAAAAAAAAAgAAAAAAgAAAAAA=</HashCode>
+      <FileName>Entities\Seat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Beeater.Domain.Entities.Show">
+    <Position X="3.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAABAAgEAAAAAAAAAAAAQAAAAAAAAEAgAAAAAA=</HashCode>
+      <FileName>Entities\Show.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Beeater.Domain.Entities.Theater">
+    <Position X="5.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAgIAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Theater.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Beeater.Domain.Entities.Trailer">
+    <Position X="8" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAEAIAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Trailer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Beeater.Domain.Entities.User">
+    <Position X="11" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECAEAAACAgAAAIAgAAAAQAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Entities\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
