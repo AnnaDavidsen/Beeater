@@ -1,19 +1,18 @@
 ﻿using System;
-using Beeater.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace Beeater.Persistence
+namespace Beeater.Domain.Entities
 {
-    public partial class MovieBeeaterContext : DbContext
+    public partial class beeaterContext : DbContext
     {
-        public MovieBeeaterContext()
+        public beeaterContext()
         {
         }
 
-        public MovieBeeaterContext(DbContextOptions<MovieBeeaterContext> options)
+        public beeaterContext(DbContextOptions<beeaterContext> options)
             : base(options)
         {
         }
@@ -36,7 +35,7 @@ namespace Beeater.Persistence
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=localhost;Database=MovieBeeater;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=beeaterserver.database.windows.net;Initial Catalog=beeater;User ID=stumpedumpe;Password=~u/Z`4_cC&q8D:u`G*WM;");
             }
         }
 
@@ -48,30 +47,15 @@ namespace Beeater.Persistence
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Bookingauth)
-                    .HasMaxLength(1)
-                    .HasColumnName("bookingauth")
-                    .IsFixedLength(true);
+                entity.Property(e => e.Bookingauth).HasColumnName("bookingauth");
 
-                entity.Property(e => e.Movieauth)
-                    .HasMaxLength(1)
-                    .HasColumnName("movieauth")
-                    .IsFixedLength(true);
+                entity.Property(e => e.Movieauth).HasColumnName("movieauth");
 
-                entity.Property(e => e.Sceneauth)
-                    .HasMaxLength(1)
-                    .HasColumnName("sceneauth")
-                    .IsFixedLength(true);
+                entity.Property(e => e.Sceneauth).HasColumnName("sceneauth");
 
-                entity.Property(e => e.Showingauth)
-                    .HasMaxLength(1)
-                    .HasColumnName("showingauth")
-                    .IsFixedLength(true);
+                entity.Property(e => e.Showingauth).HasColumnName("showingauth");
 
-                entity.Property(e => e.Userauth)
-                    .HasMaxLength(1)
-                    .HasColumnName("userauth")
-                    .IsFixedLength(true);
+                entity.Property(e => e.Userauth).HasColumnName("userauth");
             });
 
             modelBuilder.Entity<Booking>(entity =>
@@ -89,17 +73,17 @@ namespace Beeater.Persistence
                 entity.HasOne(d => d.Seat)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.SeatId)
-                    .HasConstraintName("FK__Booking__seatId__45F365D3");
+                    .HasConstraintName("FK__Booking__seatId__7E37BEF6");
 
                 entity.HasOne(d => d.Show)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.ShowId)
-                    .HasConstraintName("FK__Booking__showId__44FF419A");
+                    .HasConstraintName("FK__Booking__showId__7D439ABD");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Booking__userId__440B1D61");
+                    .HasConstraintName("FK__Booking__userId__7C4F7684");
             });
 
             modelBuilder.Entity<Employee>(entity =>
@@ -132,14 +116,14 @@ namespace Beeater.Persistence
                 entity.HasOne(d => d.Authorization)
                     .WithMany(p => p.Employees)
                     .HasForeignKey(d => d.AuthorizationId)
-                    .HasConstraintName("FK__Employee__author__286302EC");
+                    .HasConstraintName("FK__Employee__author__60A75C0F");
             });
 
             modelBuilder.Entity<Genre>(entity =>
             {
                 entity.ToTable("Genre");
 
-                entity.HasIndex(e => e.Name, "UQ__Genre__72E12F1B6F6D6890")
+                entity.HasIndex(e => e.Name, "UQ__Genre__72E12F1BC8DACA19")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -184,13 +168,13 @@ namespace Beeater.Persistence
                     .WithMany(p => p.Preferences)
                     .HasForeignKey(d => d.GenreId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Preferenc__genre__2F10007B");
+                    .HasConstraintName("FK__Preferenc__genre__6754599E");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Preferences)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Preferenc__userI__2E1BDC42");
+                    .HasConstraintName("FK__Preferenc__userI__66603565");
             });
 
             modelBuilder.Entity<Rating>(entity =>
@@ -209,13 +193,13 @@ namespace Beeater.Persistence
                     .WithMany(p => p.Ratings)
                     .HasForeignKey(d => d.MovieId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Rating__movieId__35BCFE0A");
+                    .HasConstraintName("FK__Rating__movieId__6E01572D");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Ratings)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Rating__userId__34C8D9D1");
+                    .HasConstraintName("FK__Rating__userId__6D0D32F4");
             });
 
             modelBuilder.Entity<Seat>(entity =>
@@ -233,7 +217,7 @@ namespace Beeater.Persistence
                 entity.HasOne(d => d.Theater)
                     .WithMany(p => p.Seats)
                     .HasForeignKey(d => d.TheaterId)
-                    .HasConstraintName("FK__Seat__theaterId__412EB0B6");
+                    .HasConstraintName("FK__Seat__theaterId__797309D9");
             });
 
             modelBuilder.Entity<Show>(entity =>
@@ -253,12 +237,12 @@ namespace Beeater.Persistence
                 entity.HasOne(d => d.Movie)
                     .WithMany(p => p.Shows)
                     .HasForeignKey(d => d.MovieId)
-                    .HasConstraintName("FK__Show__movieId__3D5E1FD2");
+                    .HasConstraintName("FK__Show__movieId__75A278F5");
 
                 entity.HasOne(d => d.Theater)
                     .WithMany(p => p.Shows)
                     .HasForeignKey(d => d.TheaterId)
-                    .HasConstraintName("FK__Show__theaterId__3E52440B");
+                    .HasConstraintName("FK__Show__theaterId__76969D2E");
             });
 
             modelBuilder.Entity<Theater>(entity =>
@@ -289,7 +273,7 @@ namespace Beeater.Persistence
                 entity.HasOne(d => d.Movie)
                     .WithMany(p => p.Trailers)
                     .HasForeignKey(d => d.Movieid)
-                    .HasConstraintName("FK__Trailer__movieid__38996AB5");
+                    .HasConstraintName("FK__Trailer__movieid__70DDC3D8");
             });
 
             modelBuilder.Entity<User>(entity =>

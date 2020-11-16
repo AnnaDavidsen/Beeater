@@ -13,11 +13,11 @@ namespace Beeater.Domain.Entities
         }
 
         public int Id { get; set; }
-        public byte[] Userauth { get; set; }
-        public byte[] Movieauth { get; set; }
-        public byte[] Showingauth { get; set; }
-        public byte[] Sceneauth { get; set; }
-        public byte[] Bookingauth { get; set; }
+        public bool? Userauth { get; set; }
+        public bool? Movieauth { get; set; }
+        public bool? Showingauth { get; set; }
+        public bool? Sceneauth { get; set; }
+        public bool? Bookingauth { get; set; }
 
         public virtual ICollection<Employee> Employees { get; set; }
     }
