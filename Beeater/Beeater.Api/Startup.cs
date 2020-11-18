@@ -17,6 +17,7 @@ namespace Beeater.Api
 {
     public class Startup
     {
+        //to re-scaffold: Scaffold-DbContext 'Server=beeaterserver.database.windows.net;Initial Catalog=beeater;User ID=stumpedumpe;Password=~u/Z`4_cC&q8D:u`G*WM;' Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities  -force
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
