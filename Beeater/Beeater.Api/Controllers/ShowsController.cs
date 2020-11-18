@@ -34,7 +34,7 @@ namespace Beeater.Api.Controllers
         {
             var shows = await _context.Shows
                 .Where(s => _context.Movies
-                .Any(m => title == m.Title))
+                    .Any(m => title == m.Title))
                 .ToListAsync();
 
             return Ok(shows);
