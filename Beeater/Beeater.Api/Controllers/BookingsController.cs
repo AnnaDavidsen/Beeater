@@ -2,6 +2,7 @@
 using Beeater.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,30 @@ namespace Beeater.Api.Controllers
 
         }
         // GetAll, GetById and Post are located in CommonController class
+        
+        [HttpGet("{id}/detailed")]
+        public async Task<ActionResult<Booking>> GetBookingDetailed(int id)
+        {
+            var booking = await _context.Bookings
+                .Include(x => x.Seat)
+                .Include(x => x.Show)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
+            return Ok(booking);
+        }
+
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsForUser(int userId)
+        {
+            var bookings = await _context.Bookings
+                .Include(x => x.Seat)
+                .Include(x => x.Show)
+                    .ThenInclude(x => x.Movie)
+                 .Include(x => x.Show.Theater)
+                 .Include(x => x.Show.ShowTime)
+                 .ToListAsync();
+
+            return Ok(bookings);
+        }
     }
 }
