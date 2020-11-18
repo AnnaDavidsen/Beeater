@@ -21,8 +21,9 @@ namespace Beeater.Api.Controllers
         // GetAll, GetById and Post are located in CommonController class
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> Put(int id, [FromBody] string value)
         {
+            return Ok();
         }
 
     }
