@@ -36,11 +36,11 @@ namespace Beeater.Api.Controllers
         public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsForUser(int userId)
         {
             var bookings = await _context.Bookings
-                .Include(x => x.Seat)
                 .Include(x => x.Show)
                     .ThenInclude(x => x.Movie)
-                 .Include(x => x.Show.Theater)
-                 .Include(x => x.Show.ShowTime)
+                .Include(x => x.Show)
+                    .ThenInclude(x => x.Theater)
+                .Include(x => x.Seat)                    
                  .ToListAsync();
 
             return Ok(bookings);
