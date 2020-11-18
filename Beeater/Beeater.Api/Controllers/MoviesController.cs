@@ -49,5 +49,13 @@ namespace Beeater.Api.Controllers
             else
                 return NotFound();
         }
+
+        [HttpGet("genre/{genreId}")]
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMoviesByGenreId(int genreId)
+        {
+            var movies = await _context.Movies.Where(x => x.GenreId == genreId).ToListAsync();
+
+            return Ok(movies);
+        }
     }
 }
