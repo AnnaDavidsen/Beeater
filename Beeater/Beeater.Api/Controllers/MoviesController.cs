@@ -33,5 +33,21 @@ namespace Beeater.Api.Controllers
             else
                 return NotFound();
         }
+
+        [HttpGet("{id}/detailed")]
+        public async Task<ActionResult<Movie>> GetMovieByIdDetailed(int id)
+        {
+            var movie = await _context.Movies
+                .Include(a => a.Trailers)
+                .Include(a => a.Ratings)
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (movie != null)
+                return Ok(movie);
+
+            else
+                return NotFound();
+        }
     }
 }

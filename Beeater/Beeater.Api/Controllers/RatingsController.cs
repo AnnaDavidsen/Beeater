@@ -11,15 +11,14 @@ namespace Beeater.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : CommonController<User>
+    public class RatingsController : CommonController<Rating>
     {
-        public UsersController(beeaterContext context)
-            :base(context)
+        public RatingsController(beeaterContext context)
+            : base(context)
         {
 
         }
-        // GetAll, GetById and Post are located in CommonController class
 
-        
+
     }
 }
