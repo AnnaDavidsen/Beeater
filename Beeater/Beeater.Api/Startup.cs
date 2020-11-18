@@ -29,7 +29,8 @@ namespace Beeater.Api
         {
             services.AddControllers().AddNewtonsoftJson(opt =>
                 opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            services.AddDbContext<beeaterContext>();
+            services.AddDbContext<beeaterContext>(opt => 
+                opt.UseSqlServer(Configuration.GetConnectionString("Database")));
 
         }
 
