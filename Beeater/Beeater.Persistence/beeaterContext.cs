@@ -1,11 +1,10 @@
 ﻿using System;
-using Beeater.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace Beeater.Persistence
+namespace Beeater.Domain.Entities
 {
     public partial class beeaterContext : DbContext
     {
@@ -30,6 +29,15 @@ namespace Beeater.Persistence
         public virtual DbSet<Theater> Theaters { get; set; }
         public virtual DbSet<Trailer> Trailers { get; set; }
         public virtual DbSet<User> Users { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=beeaterserver.database.windows.net;Initial Catalog=beeater;User ID=stumpedumpe;Password=~u/Z`4_cC&q8D:u`G*WM;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -70,11 +78,13 @@ namespace Beeater.Persistence
                 entity.HasOne(d => d.Show)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.ShowId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK__Booking__showId__7D439ABD");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK__Booking__userId__7C4F7684");
             });
 
@@ -138,6 +148,8 @@ namespace Beeater.Persistence
 
                 entity.Property(e => e.GenreId).HasColumnName("genreId");
 
+                entity.Property(e => e.MoviePoster).HasColumnName("moviePoster");
+
                 entity.Property(e => e.ReleaseDate)
                     .HasColumnType("date")
                     .HasColumnName("releaseDate");
@@ -184,7 +196,6 @@ namespace Beeater.Persistence
                 entity.HasOne(d => d.Movie)
                     .WithMany(p => p.Ratings)
                     .HasForeignKey(d => d.MovieId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Rating__movieId__6E01572D");
 
                 entity.HasOne(d => d.User)
@@ -229,6 +240,7 @@ namespace Beeater.Persistence
                 entity.HasOne(d => d.Movie)
                     .WithMany(p => p.Shows)
                     .HasForeignKey(d => d.MovieId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK__Show__movieId__75A278F5");
 
                 entity.HasOne(d => d.Theater)

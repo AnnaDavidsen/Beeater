@@ -20,6 +20,7 @@ namespace Beeater.Domain.Entities
         public DateTime ReleaseDate { get; set; }
         public int? AgeRating { get; set; }
         public int GenreId { get; set; }
+        public string MoviePoster { get; set; }
 
         public virtual ICollection<Rating> Ratings { get; set; }
         public virtual ICollection<Show> Shows { get; set; }
