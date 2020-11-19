@@ -35,7 +35,6 @@ namespace Beeater.Api.Controllers
                 for (int i = 1; i <= seats; i++)
                 {
                     _context.Seats.Add(new Seat { Number = i, Row = row, TheaterId = theater.Id });
-
                 }
             }
 
