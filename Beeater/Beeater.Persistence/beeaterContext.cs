@@ -1,10 +1,11 @@
 ﻿using System;
+using Beeater.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace Beeater.Domain.Entities
+namespace Beeater.Persistence
 {
     public partial class beeaterContext : DbContext
     {
