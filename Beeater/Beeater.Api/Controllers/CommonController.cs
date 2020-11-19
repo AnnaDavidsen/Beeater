@@ -45,5 +45,16 @@ namespace Beeater.Api.Controllers
 
             return Ok();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var toDelete = await _context.Set<T>().FindAsync(id);
+            _context.Set<T>().Remove(toDelete);
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

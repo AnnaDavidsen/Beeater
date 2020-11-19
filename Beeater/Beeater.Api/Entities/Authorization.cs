@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+
+#nullable disable
+
+namespace Beeater.Api.Entities
+{
+    public partial class Authorization
+    {
+        public Authorization()
+        {
+            Employees = new HashSet<Employee>();
+        }
+
+        public int Id { get; set; }
+        public bool? Userauth { get; set; }
+        public bool? Movieauth { get; set; }
+        public bool? Showingauth { get; set; }
+        public bool? Sceneauth { get; set; }
+        public bool? Bookingauth { get; set; }
+
+        public virtual ICollection<Employee> Employees { get; set; }
+    }
+}
