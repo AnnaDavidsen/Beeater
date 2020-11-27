@@ -20,6 +20,22 @@ namespace Beeater.Api.Controllers
 
         // GetAll, GetById and Post are located in CommonController class
 
+        [HttpGet("withgenre")]
+        public async Task<ActionResult<IEnumerable<object>>> GetMovieByTitle()
+        {
+            //Besked til Anna:
+            //Det virker fint.... Men det må kunne gøres kønnere?
+            var movies = await _context.Movies
+                .Join(_context.Genres,
+                    m => m.GenreId,
+                    g => g.Id,
+                    (m, g) => new { movie = m, genre = g }
+                    ).ToListAsync();
+            return movies;
+        }
+
+
+
         [HttpGet("title/{title}")]
         public async Task<ActionResult<Movie>> GetMovieByTitle(string title)
         {
