@@ -32,7 +32,7 @@ namespace Beeater.Api.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{email}")]
+        [HttpGet("email/{email}")]
         public async Task<ActionResult<User>> GetUserByEmail(string email)
         {
             var user = await _context.Users
