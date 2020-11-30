@@ -17,6 +17,7 @@ namespace Beeater.Api
 {
     public class Startup
     {
+        readonly string AllowedOrigins = "_allowedOrigins";
         //to re-scaffold: Scaffold-DbContext 'Server=beeaterserver.database.windows.net;Initial Catalog=beeater;User ID=stumpedumpe;Password=~u/Z`4_cC&q8D:u`G*WM;' Microsoft.EntityFrameworkCore.SqlServer -Project Beeater.Domain -OutputDir Entities  -force
         public Startup(IConfiguration configuration)
         {
@@ -32,7 +33,15 @@ namespace Beeater.Api
                 opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddDbContext<beeaterContext>(opt => 
                 opt.UseSqlServer(Configuration.GetConnectionString("Database")));
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: AllowedOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost/4200")
+                        .AllowAnyOrigin();
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +53,8 @@ namespace Beeater.Api
             }
 
             app.UseRouting();
+
+            app.UseCors(AllowedOrigins);
 
             app.UseAuthorization();
 

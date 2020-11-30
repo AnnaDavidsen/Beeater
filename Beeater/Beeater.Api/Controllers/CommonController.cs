@@ -40,10 +40,19 @@ namespace Beeater.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] IEnumerable<T> entities)
         {
-            await _context.Set<T>().AddRangeAsync(entities);
+            _context.Set<T>().AddRange(entities);
             await _context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Put([FromBody] IEnumerable<T> entities)
+        {
+            _context.Set<T>().UpdateRange(entities);
+            await _context.SaveChangesAsync();
+            return Ok();
+
         }
 
         [HttpDelete("{id}")]
