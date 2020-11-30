@@ -31,6 +31,14 @@ namespace Beeater.Persistence
         public virtual DbSet<Trailer> Trailers { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=beeaterserver.database.windows.net;Initial Catalog=beeater;User ID=stumpedumpe;Password=~u/Z`4_cC&q8D:u`G*WM;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -61,7 +69,9 @@ namespace Beeater.Persistence
 
                 entity.Property(e => e.ShowId).HasColumnName("showId");
 
-                entity.Property(e => e.UserId).HasColumnName("userId");
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(50)
+                    .HasColumnName("userId");
 
                 entity.HasOne(d => d.Seat)
                     .WithMany(p => p.Bookings)
@@ -77,8 +87,7 @@ namespace Beeater.Persistence
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK__Booking__userId__7C4F7684");
+                    .HasConstraintName("FK__Booking__userId__1332DBDC");
             });
 
             modelBuilder.Entity<Employee>(entity =>
@@ -159,7 +168,9 @@ namespace Beeater.Persistence
 
                 entity.Property(e => e.GenreId).HasColumnName("genreId");
 
-                entity.Property(e => e.UserId).HasColumnName("userId");
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(50)
+                    .HasColumnName("userId");
 
                 entity.HasOne(d => d.Genre)
                     .WithMany(p => p.Preferences)
@@ -170,8 +181,7 @@ namespace Beeater.Persistence
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Preferences)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Preferenc__userI__66603565");
+                    .HasConstraintName("FK__Preferenc__userI__123EB7A3");
             });
 
             modelBuilder.Entity<Rating>(entity =>
@@ -184,7 +194,9 @@ namespace Beeater.Persistence
 
                 entity.Property(e => e.Rating1).HasColumnName("rating");
 
-                entity.Property(e => e.UserId).HasColumnName("userId");
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(50)
+                    .HasColumnName("userId");
 
                 entity.HasOne(d => d.Movie)
                     .WithMany(p => p.Ratings)
@@ -194,8 +206,7 @@ namespace Beeater.Persistence
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Ratings)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Rating__userId__6D0D32F4");
+                    .HasConstraintName("FK__Rating__userId__114A936A");
             });
 
             modelBuilder.Entity<Seat>(entity =>
@@ -277,7 +288,9 @@ namespace Beeater.Persistence
             {
                 entity.ToTable("User");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasMaxLength(50)
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Birthdate)
                     .HasColumnType("date")
