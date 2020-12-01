@@ -292,6 +292,8 @@ namespace Beeater.Persistence
                     .HasMaxLength(50)
                     .HasColumnName("id");
 
+                entity.Property(e => e.AuthorizationId).HasColumnName("authorizationId");
+
                 entity.Property(e => e.Birthdate)
                     .HasColumnType("date")
                     .HasColumnName("birthdate");
@@ -312,6 +314,11 @@ namespace Beeater.Persistence
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("lastname");
+
+                entity.HasOne(d => d.Authorization)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.AuthorizationId)
+                    .HasConstraintName("FK__User__authorizat__14270015");
             });
 
             OnModelCreatingPartial(modelBuilder);

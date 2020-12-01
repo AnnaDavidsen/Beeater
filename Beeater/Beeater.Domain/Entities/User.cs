@@ -20,7 +20,9 @@ namespace Beeater.Domain.Entities
         public DateTime Birthdate { get; set; }
         public int? BonusPoints { get; set; }
         public string Id { get; set; }
+        public int? AuthorizationId { get; set; }
 
+        public virtual Authorization Authorization { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
         public virtual ICollection<Preference> Preferences { get; set; }
         public virtual ICollection<Rating> Ratings { get; set; }
