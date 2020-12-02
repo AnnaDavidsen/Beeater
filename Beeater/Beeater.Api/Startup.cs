@@ -39,7 +39,9 @@ namespace Beeater.Api
                     builder =>
                     {
                         builder.WithOrigins("http://localhost/4200")
-                        .AllowAnyOrigin();
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
                     });
             });
         }
