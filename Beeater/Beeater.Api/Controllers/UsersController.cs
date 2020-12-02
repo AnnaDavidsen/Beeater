@@ -21,6 +21,19 @@ namespace Beeater.Api.Controllers
         }
         // GetAll, GetById and Post are located in CommonController class
 
+
+        [HttpGet("id/{id}")]
+        public async Task<ActionResult<User>> GetUserById(string id)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (user != null)
+                return Ok(user);
+            else
+                return NotFound();
+        }
+
         [HttpGet("{firstName}/{lastName}")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsersByFullName(string firstName, string lastName)
         {
@@ -32,7 +45,7 @@ namespace Beeater.Api.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{email}")]
+        [HttpGet("email/{email}")]
         public async Task<ActionResult<User>> GetUserByEmail(string email)
         {
             var user = await _context.Users

@@ -10,6 +10,7 @@ namespace Beeater.Domain.Entities
         public Authorization()
         {
             Employees = new HashSet<Employee>();
+            Users = new HashSet<User>();
         }
 
         public int Id { get; set; }
@@ -20,5 +21,6 @@ namespace Beeater.Domain.Entities
         public bool? Bookingauth { get; set; }
 
         public virtual ICollection<Employee> Employees { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }
