@@ -48,5 +48,32 @@ namespace Beeater.Api.Controllers
 
             return Ok(shows);
         }
+
+        [HttpGet("seatstatus/{showId}")]
+        public async Task<ActionResult<object>> GetShowWithSeatsAndSeatStatus(int showId)
+        {
+            var show = await _context.Shows
+                .Include(x => x.Theater)
+                    .ThenInclude(x => x.Seats)
+                .FirstOrDefaultAsync(x => x.Id == showId);
+
+            var bookings = await _context.Bookings
+                .Where(x => x.ShowId == showId)
+                .ToListAsync();
+
+            if (show!=null)
+            {
+                return new
+                {
+                    id = show.Id,
+                    seats = show.Theater.Seats.Select(x => new { x.Id, x.Row, x.Number }),
+                    occupiedSeats = bookings.Select(x => x.Seat.Id)
+                }; 
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }
