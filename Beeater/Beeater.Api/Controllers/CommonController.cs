@@ -63,7 +63,7 @@ namespace Beeater.Api.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(toDelete);
         }
     }
 }
