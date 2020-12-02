@@ -38,7 +38,7 @@ namespace Beeater.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<T>>> Post([FromBody] IEnumerable<T> entities)
+        public async Task<ActionResult> Post([FromBody] IEnumerable<T> entities)
         {
             _context.Set<T>().AddRange(entities);
             await _context.SaveChangesAsync();
@@ -51,7 +51,7 @@ namespace Beeater.Api.Controllers
         {
             _context.Set<T>().UpdateRange(entities);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(entities);
 
         }
 
