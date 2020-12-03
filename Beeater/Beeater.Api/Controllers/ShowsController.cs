@@ -20,9 +20,10 @@ namespace Beeater.Api.Controllers
 
         }
         [HttpGet("movieid/{movieid}")]
-        public async Task<ActionResult<IEnumerable<Show>>> GetShowByMovieTitle(int movieId)
+        public async Task<ActionResult<IEnumerable<Show>>> GetShowByMovieId(int movieId)
         {
             var shows = await _context.Shows
+                .Include(x => x.Theater)
                 .Where(s => s.MovieId == movieId)
                 .ToListAsync();
 
