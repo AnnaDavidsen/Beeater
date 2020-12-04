@@ -2,6 +2,7 @@
 using Beeater.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,12 @@ namespace Beeater.Api.Controllers
             : base(context)
         {
 
+        }
+
+        [HttpGet("seats")]
+        public async Task<ActionResult<IEnumerable<Theater>>> GetWithSeats()
+        {
+            return Ok(await _context.Theaters.Include(t => t.Seats).ToListAsync());
         }
 
         [HttpPost("seats")]
