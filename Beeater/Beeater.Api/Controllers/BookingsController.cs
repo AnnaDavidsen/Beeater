@@ -33,7 +33,7 @@ namespace Beeater.Api.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsForUser(int userId)
+        public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsForUser(string userId)
         {
             var bookings = await _context.Bookings
                 .Include(x => x.Show)
