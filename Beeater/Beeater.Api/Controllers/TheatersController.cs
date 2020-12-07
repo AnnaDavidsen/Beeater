@@ -27,8 +27,18 @@ namespace Beeater.Api.Controllers
             return Ok(await _context.Theaters.Include(t => t.Seats).ToListAsync());
         }
 
+        [HttpPut("seats")]
+        public async Task<ActionResult> PutTheaterWithSeats([FromBody] JObject theaterAndRows)
+        {
+            Theater theater = theaterAndRows["theater"].ToObject<Theater>();
+            Seat[] seats = theaterAndRows["seats"].ToObject<Seat[]>();
+            return Ok();
+        }
+
+
+
         [HttpPost("seats")]
-        public async Task<ActionResult> Post([FromBody] JObject theaterAndRows)
+        public async Task<ActionResult> PostTheaterWithSeats([FromBody] JObject theaterAndRows)
         {
             Theater theater = theaterAndRows["theater"].ToObject<Theater>();
             int[] rows = theaterAndRows["rows"].ToObject<int[]>();
