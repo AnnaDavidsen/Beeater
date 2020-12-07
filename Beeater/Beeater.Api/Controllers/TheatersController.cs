@@ -28,11 +28,14 @@ namespace Beeater.Api.Controllers
         }
 
         [HttpPut("seats")]
-        public async Task<ActionResult> PutTheaterWithSeats([FromBody] JObject theaterAndRows)
+        public async Task<ActionResult<Theater>> PutTheaterWithSeats([FromBody] JObject theaterAndSeatsToBeDeleted)
         {
-            Theater theater = theaterAndRows["theater"].ToObject<Theater>();
-            Seat[] seats = theaterAndRows["seats"].ToObject<Seat[]>();
-            return Ok();
+            Theater theater = theaterAndSeatsToBeDeleted["theater"].ToObject<Theater>();
+            Seat[] seatsToBeDeleted = theaterAndSeatsToBeDeleted["seatsToBeDeleted"].ToObject<Seat[]>();
+            _context.Theaters.Update(theater);
+            _context.Seats.RemoveRange(seatsToBeDeleted);
+            await _context.SaveChangesAsync();
+            return Ok(theater);
         }
 
 
