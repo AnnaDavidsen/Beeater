@@ -20,6 +20,14 @@ namespace Beeater.Api.Controllers
 
         }
 
+        [HttpGet("movie/{movieId}")]
+        public async Task<ActionResult<IEnumerable<Rating>>> GetAllRatingsForMovie(int movieId)
+        {
+            var ratings = await _context.Ratings.Where(x => x.MovieId == movieId).ToListAsync();
+
+            return ratings;
+        }
+
         [HttpGet("user/{userId}/movie/{movieId}")]
         public async Task<ActionResult<Rating>> GetRatingByUserAndMovieId(string userId, int movieId)
         {
