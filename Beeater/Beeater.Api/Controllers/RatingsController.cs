@@ -2,6 +2,7 @@
 using Beeater.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,17 @@ namespace Beeater.Api.Controllers
 
         }
 
+        [HttpGet("user/{userId}/movie/{movieId}")]
+        public async Task<ActionResult<Rating>> GetRatingByUserAndMovieId(string userId, int movieId)
+        {
+            var rating = await _context.Ratings.FirstOrDefaultAsync(x => x.UserId == userId && x.MovieId == movieId);
 
+            if (rating != null)
+                return Ok(rating);
+
+            else
+                return NotFound();
+                 
+        }
     }
 }
