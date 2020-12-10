@@ -90,5 +90,25 @@ namespace Beeater.Api.Controllers
 
             return Ok(movies);
         }
+
+        [HttpGet("upcoming")]
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMoviesWithUpcomingShows()
+        {
+            var movies = await _context.Movies
+                .Include(x => x.Shows)
+                .Where(x => x.Shows.Count > 0)                
+                .ToListAsync();
+
+            var upcoming = new List<Movie>();
+
+            foreach (var item in movies)
+            {
+                if (item.Shows.Any(x => x.ShowTime > DateTime.Now))
+                    upcoming.Add(item);
+            }
+
+            return Ok(upcoming);
+        }
+
     }
 }
