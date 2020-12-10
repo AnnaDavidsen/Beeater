@@ -92,18 +92,23 @@ namespace Beeater.Api.Controllers
         }
 
         [HttpGet("upcoming")]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMoviesWithUpcomingShows()
+        public async Task<ActionResult<IEnumerable<object>>> GetMoviesWithUpcomingShows()
         {
             var movies = await _context.Movies
                 .Include(x => x.Shows)
-                .Where(x => x.Shows.Count > 0)                
+                .Where(x => x.Shows.Count > 0)
+                .Join(_context.Genres,
+                    m => m.GenreId,
+                    g => g.Id,
+                    (m, g) => new { movie = m, genre = g }
+                    )
                 .ToListAsync();
 
-            var upcoming = new List<Movie>();
+            var upcoming = new List<object>();
 
             foreach (var item in movies)
             {
-                if (item.Shows.Any(x => x.ShowTime > DateTime.Now))
+                if (item.movie.Shows.Any(x => x.ShowTime > DateTime.Now))
                     upcoming.Add(item);
             }
 
