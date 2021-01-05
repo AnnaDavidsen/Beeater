@@ -87,5 +87,17 @@ namespace Beeater.Api.Controllers
 
             return Ok(users);
         }
+
+
+        [HttpDelete("stringid/{id}")]
+        public async Task<ActionResult> DeleteByStringId(string id)
+        {
+            var toDelete = await _context.Users.FindAsync(id);
+            _context.Users.Remove(toDelete);
+
+            await _context.SaveChangesAsync();
+
+            return Ok(toDelete);
+        }
     }
 }

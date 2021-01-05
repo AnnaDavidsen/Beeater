@@ -232,7 +232,7 @@ namespace Beeater.Persistence
                 entity.Property(e => e.MovieId).HasColumnName("movieId");
 
                 entity.Property(e => e.ShowTime)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("showTime");
 
                 entity.Property(e => e.TheaterId).HasColumnName("theaterId");
