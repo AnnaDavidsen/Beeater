@@ -20,18 +20,41 @@ namespace Beeater.Api.Controllers
         {
             _repo = repo;
         }
-        // GetAll, GetById and Post are located in CommonController class
-        
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Booking>>> GetAll()
+        {
+            var entities = await _repo.Bookings.FindAll().ToListAsync();
+            return Ok(entities);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Booking>> GetById(int id)
+        {
+            var entity = await _repo.Bookings.FindByCondition(x => x.Id == id).FirstOrDefaultAsync();
+
+            if (entity != null)
+                return Ok(entity);
+
+            else
+                return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] IEnumerable<Booking> entities)
+        {
+            _repo.Bookings.Create(entities);
+            await _repo.SaveAsync();
+
+            return Ok(entities);
+        }
+
         [HttpGet("{id}/detailed")]
         public async Task<ActionResult<Booking>> GetBookingDetailed(int id)
         {
             var booking = await _repo.Bookings
                 .Include(x => x.Seat, x => x.Show)
                 .FirstOrDefaultAsync(x => x.Id == id);
-            //var booking = await _context.Bookings
-            //    .Include(x => x.Seat)
-            //    .Include(x => x.Show)
-            //    .FirstOrDefaultAsync(x => x.Id == id);
 
             return Ok(booking);
         }
@@ -44,14 +67,6 @@ namespace Beeater.Api.Controllers
                 .Where(x => x.UserId == userId)
                 .ToListAsync();
                 
-            //var bookings = await _context.Bookings
-            //    .Include(x => x.Show)
-            //        .ThenInclude(x => x.Movie)
-            //    .Include(x => x.Show)
-            //        .ThenInclude(x => x.Theater)
-            //    .Include(x => x.Seat)                    
-            //     .ToListAsync();
-
             return Ok(bookings);
         }
     }

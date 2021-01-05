@@ -14,6 +14,7 @@ namespace Beeater.Contracts
         ITheaterRepository Theaters { get; }
         IShowRepository Shows { get; }
         IUserRepository Users { get; }
+        ISeatRepository Seats { get; }
         Task SaveAsync();
     }
 }

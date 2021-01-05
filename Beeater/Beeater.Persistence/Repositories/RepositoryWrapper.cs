@@ -17,6 +17,7 @@ namespace Beeater.Persistence.Repositories
         private ITheaterRepository _theaters;
         private IShowRepository _shows;
         private IUserRepository _users;
+        private ISeatRepository _seats;
 
         public RepositoryWrapper(beeaterContext context)
         {
@@ -83,6 +84,15 @@ namespace Beeater.Persistence.Repositories
             {
                 if (_users == null) _users = new UserRepository(_context);
                 return _users;
+            }
+        }
+
+        public ISeatRepository Seats
+        {
+            get
+            {
+                if (_seats == null) _seats = new SeatRepository(_context);
+                return _seats;
             }
         }
 

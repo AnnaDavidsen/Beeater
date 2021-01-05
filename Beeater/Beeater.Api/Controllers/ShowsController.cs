@@ -1,4 +1,5 @@
-﻿using Beeater.Domain.Entities;
+﻿using Beeater.Contracts;
+using Beeater.Domain.Entities;
 using Beeater.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,17 +13,47 @@ namespace Beeater.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ShowsController : CommonController<Show>
+    public class ShowsController : ControllerBase
     {
-        public ShowsController(beeaterContext context)
-            : base(context)
+        private IRepositoryWrapper _repo;
+        public ShowsController(IRepositoryWrapper repo)
         {
-
+            _repo = repo;
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Show>>> GetAll()
+        {
+            var entities = await _repo.Shows.FindAll().ToListAsync();
+            return Ok(entities);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Show>> GetById(int id)
+        {
+            var entity = await _repo.Shows.FindByCondition(x => x.Id == id).FirstOrDefaultAsync();
+
+            if (entity != null)
+                return Ok(entity);
+
+            else
+                return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] IEnumerable<Show> entities)
+        {
+            _repo.Shows.Create(entities);
+            await _repo.SaveAsync();
+
+            return Ok(entities);
+        }
+
+
         [HttpGet("movieid/{movieid}")]
         public async Task<ActionResult<IEnumerable<Show>>> GetShowByMovieId(int movieId)
         {
-            var shows = await _context.Shows
+            var shows = await _repo.Shows
                 .Include(x => x.Theater)
                 .Where(s => s.MovieId == movieId)
                 .ToListAsync();
@@ -33,8 +64,8 @@ namespace Beeater.Api.Controllers
         [HttpGet("title/{title}")]
         public async Task<ActionResult<IEnumerable<Show>>> GetShowByMovieTitle(string title)
         {
-            var shows = await _context.Shows
-                .Where(s => _context.Movies
+            var shows = await _repo.Shows
+                .FindByCondition(s => _repo.Movies.FindAll()
                     .Any(m => title == m.Title))
                 .ToListAsync();
 
@@ -43,8 +74,8 @@ namespace Beeater.Api.Controllers
         [HttpGet("theater/{theaterId}")]
         public async Task<ActionResult<IEnumerable<Show>>> GetShowsByTheaterId(int theaterId)
         {
-            var shows = await _context.Shows
-                .Where(s => s.TheaterId == theaterId)
+            var shows = await _repo.Shows
+                .FindByCondition(s => s.TheaterId == theaterId)
                 .ToListAsync();
 
             return Ok(shows);
@@ -53,13 +84,12 @@ namespace Beeater.Api.Controllers
         [HttpGet("seatstatus/{showId}")]
         public async Task<ActionResult<object>> GetShowWithSeatsAndSeatStatus(int showId)
         {
-            var show = await _context.Shows
-                .Include(x => x.Theater)
-                    .ThenInclude(x => x.Seats)
+            var show = await _repo.Shows
+                .Include(x => x.Theater, x => x.Theater.Seats)
                 .FirstOrDefaultAsync(x => x.Id == showId);
 
-            var bookings = await _context.Bookings
-                .Where(x => x.ShowId == showId)
+            var bookings = await _repo.Bookings
+                .FindByCondition(x => x.ShowId == showId)
                 .ToListAsync();
 
             if (show!=null)
@@ -68,7 +98,7 @@ namespace Beeater.Api.Controllers
                 {
                     id = show.Id,
                     seats = show.Theater.Seats.Select(x => new { x.Id, x.Row, x.Number }),
-                    occupiedSeats = bookings.Select(x => x.Seat.Id)
+                    occupiedSeats = bookings.Select(x => x.SeatId)
                 }; 
             }
             else
