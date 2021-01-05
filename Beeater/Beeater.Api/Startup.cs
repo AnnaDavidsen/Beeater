@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Beeater.Domain.Entities;
+using Beeater.Contracts;
+using Beeater.Persistence.Repositories;
 
 namespace Beeater.Api
 {
@@ -44,6 +46,7 @@ namespace Beeater.Api
                         .AllowAnyMethod();
                     });
             });
+            //services.AddScoped(typeof(IRepository<>), typeof(RepositoryBase<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
