@@ -63,6 +63,8 @@ namespace Beeater.Api.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var toDelete = await _repo.Theaters.FindByCondition(x => x.Id == id).ToListAsync();
+            var seatsToDelete = await _repo.Seats.FindByCondition(x => x.TheaterId == id).ToListAsync();
+            _repo.Seats.Delete(seatsToDelete);
             _repo.Theaters.Delete(toDelete);
 
             await _repo.SaveAsync();
