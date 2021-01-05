@@ -50,6 +50,25 @@ namespace Beeater.Api.Controllers
             return Ok(entities);
         }
 
+        [HttpPut]
+        public async Task<ActionResult> Put([FromBody] IEnumerable<Theater> entities)
+        {
+            _repo.Theaters.Update(entities);
+            await _repo.SaveAsync();
+            return Ok(entities);
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var toDelete = await _repo.Theaters.FindByCondition(x => x.Id == id).ToListAsync();
+            _repo.Theaters.Delete(toDelete);
+
+            await _repo.SaveAsync();
+
+            return Ok(toDelete);
+        }
 
         [HttpGet("seats")]
         public async Task<ActionResult<IEnumerable<Theater>>> GetWithSeats()

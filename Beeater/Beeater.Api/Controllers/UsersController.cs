@@ -37,6 +37,14 @@ namespace Beeater.Api.Controllers
             return Ok(entities);
         }
 
+        [HttpPut]
+        public async Task<ActionResult> Put([FromBody] IEnumerable<User> entities)
+        {
+            _repo.Users.Update(entities);
+            await _repo.SaveAsync();
+            return Ok(entities);
+
+        }
 
         [HttpGet("id/{id}")]
         public async Task<ActionResult<User>> GetUserById(string id)
