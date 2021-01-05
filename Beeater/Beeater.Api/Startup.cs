@@ -46,7 +46,7 @@ namespace Beeater.Api
                         .AllowAnyMethod();
                     });
             });
-            //services.AddScoped(typeof(IRepository<>), typeof(RepositoryBase<>));
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -41,5 +41,16 @@ namespace Beeater.Persistence.Repositories
         {
             Context.Set<T>().UpdateRange(entities);
         }
+
+        public IQueryable<T> Include(params Expression<Func<T, object>>[] includeExpressions)
+        {
+            IQueryable<T> query = Context.Set<T>();
+            foreach (var includeExpression in includeExpressions)
+            {
+                query = query.Include(includeExpression);
+            }
+
+            return query;
+        }
     }
 }

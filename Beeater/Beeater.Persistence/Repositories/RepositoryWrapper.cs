@@ -1,4 +1,5 @@
 ﻿using Beeater.Contracts;
+using Beeater.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,6 +17,11 @@ namespace Beeater.Persistence.Repositories
         private ITheaterRepository _theaters;
         private IShowRepository _shows;
         private IUserRepository _users;
+
+        public RepositoryWrapper(beeaterContext context)
+        {
+            _context = context;
+        }
 
         public IBookingRepository Bookings
         {
@@ -79,6 +85,7 @@ namespace Beeater.Persistence.Repositories
                 return _users;
             }
         }
+
 
         public async Task SaveAsync()
         {
