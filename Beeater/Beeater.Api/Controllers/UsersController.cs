@@ -92,10 +92,10 @@ namespace Beeater.Api.Controllers
         [HttpDelete("stringid/{id}")]
         public async Task<ActionResult> DeleteByStringId(string id)
         {
-            var toDelete = await _context.Users.FindAsync(id);
-            _context.Users.Remove(toDelete);
+            var toDelete = await _repo.Users.FindByCondition(x => x.Id == id).ToListAsync();
+            _repo.Users.Delete(toDelete);
 
-            await _context.SaveChangesAsync();
+            await _repo.SaveAsync();
 
             return Ok(toDelete);
         }
