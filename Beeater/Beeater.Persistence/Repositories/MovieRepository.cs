@@ -68,7 +68,15 @@ namespace Beeater.Persistence.Repositories
                     )
                 .ToListAsync();
 
-            return a;
+            var upcoming = new List<object>();
+
+            foreach (var item in a)
+            {
+                if (item.movie.Shows.Any(x => x.ShowTime > DateTime.Now))
+                    upcoming.Add(item);
+            }
+
+            return upcoming;
         }
 
         public async Task<IEnumerable<object>> GetMoviesWithUpcomingShows()
