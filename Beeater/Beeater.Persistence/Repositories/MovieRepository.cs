@@ -55,7 +55,9 @@ namespace Beeater.Persistence.Repositories
 
         public async Task<IEnumerable<object>> GetMoviesWithGenreByGenreAndTitle(string genre, string title)
         {
-            var movies = FindAll();
+            var movies = FindAll()
+                .Include(x => x.Shows)
+                .Where(x => x.Shows.Count > 0);
 
             var a = await movies.Join(Context.Genres,
                 m => m.GenreId,
