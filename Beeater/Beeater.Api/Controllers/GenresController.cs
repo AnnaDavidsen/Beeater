@@ -66,12 +66,5 @@ namespace Beeater.Api.Controllers
 
             return Ok(toDelete);
         }
-
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] string value)
-        {
-            return Ok();
-        }
-
     }
 }

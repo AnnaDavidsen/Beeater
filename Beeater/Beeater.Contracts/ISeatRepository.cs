@@ -7,5 +7,6 @@ namespace Beeater.Contracts
 {
     public interface ISeatRepository : IRepository<Seat>
     {
+        void CreateSeats(int[] rows, int theaterId);
     }
 }
