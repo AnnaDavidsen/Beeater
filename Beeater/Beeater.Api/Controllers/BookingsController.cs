@@ -72,9 +72,7 @@ namespace Beeater.Api.Controllers
         [HttpGet("{id}/detailed")]
         public async Task<ActionResult<Booking>> GetBookingDetailed(int id)
         {
-            var booking = await _repo.Bookings
-                .Include(x => x.Seat, x => x.Show)
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var booking = await _repo.Bookings.GetBookingDetailed(id);
 
             return Ok(booking);
         }
@@ -82,10 +80,7 @@ namespace Beeater.Api.Controllers
         [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsForUser(string userId)
         {
-            var bookings = await _repo.Bookings
-                .Include(x => x.Show, x => x.Show.Movie, x => x.Show.Theater, x => x.Seat)
-                .Where(x => x.UserId == userId)
-                .ToListAsync();
+            var bookings = await _repo.Bookings.GetBookingsForUser(userId);
                 
             return Ok(bookings);
         }

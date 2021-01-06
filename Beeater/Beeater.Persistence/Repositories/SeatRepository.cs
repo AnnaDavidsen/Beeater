@@ -13,5 +13,20 @@ namespace Beeater.Persistence.Repositories
         {
 
         }
+
+        public void CreateSeats(int[] rows, int theaterId)
+        {
+            var seats = new List<Seat>();
+            int row = 0;
+            foreach (var seatCount in rows)
+            {
+                row++;
+                for (int i = 1; i <= seatCount; i++)
+                {
+                    seats.Add(new Seat() { Number = i, Row = row, TheaterId = theaterId });
+                }
+            }
+            Create(seats);
+        }
     }
 }

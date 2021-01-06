@@ -62,10 +62,7 @@ namespace Beeater.Api.Controllers
         [HttpGet("{firstName}/{lastName}")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsersByFullName(string firstName, string lastName)
         {
-            var users = await _repo.Users
-                .FindByCondition(x => x.Firstname.ToLower() == firstName.ToLower()
-                    && x.Lastname.ToLower() == lastName.ToLower())
-                .ToListAsync();
+            var users = await _repo.Users.GetUsersByFullName(firstName, lastName);
 
             return Ok(users);
         }
@@ -73,9 +70,7 @@ namespace Beeater.Api.Controllers
         [HttpGet("email/{email}")]
         public async Task<ActionResult<User>> GetUserByEmail(string email)
         {
-            var user = await _repo.Users
-                .Include(x => x.Bookings)
-                .FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
+            var user = await _repo.Users.GetUserByEmail(email);
 
             return Ok(user);
         }
@@ -92,12 +87,11 @@ namespace Beeater.Api.Controllers
         [HttpDelete("stringid/{id}")]
         public async Task<ActionResult> DeleteByStringId(string id)
         {
-            var toDelete = await _repo.Users.FindByCondition(x => x.Id == id).ToListAsync();
-            _repo.Users.Delete(toDelete);
+            await _repo.Users.DeleteUser(id);
 
             await _repo.SaveAsync();
 
-            return Ok(toDelete);
+            return Ok();
         }
     }
 }

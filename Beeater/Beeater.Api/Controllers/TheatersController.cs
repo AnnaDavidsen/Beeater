@@ -75,9 +75,8 @@ namespace Beeater.Api.Controllers
         [HttpGet("seats")]
         public async Task<ActionResult<IEnumerable<Theater>>> GetWithSeats()
         {
-            return Ok(await _repo.Theaters
-                .Include(t => t.Seats)
-                .ToListAsync());
+            var theaters = await _repo.Theaters.GetAllTheatersWithSeats();
+            return Ok(theaters);
         }
 
         [HttpPut("seats")]
@@ -86,6 +85,7 @@ namespace Beeater.Api.Controllers
             Theater theater = theaterAndSeatsToBeDeleted["theater"].ToObject<Theater>();
 
             Seat[] seatsToBeDeleted = theaterAndSeatsToBeDeleted["seatsToBeDeleted"].ToObject<Seat[]>();
+
             _repo.Theaters.Update(new Theater[] { theater });
             _repo.Seats.Delete(seatsToBeDeleted);
             await _repo.SaveAsync();
@@ -99,20 +99,11 @@ namespace Beeater.Api.Controllers
         {
             Theater theater = theaterAndRows["theater"].ToObject<Theater>();
             int[] rows = theaterAndRows["rows"].ToObject<int[]>();
-            _repo.Theaters.Create(new Theater[] { theater });
+
+            _repo.Theaters.CreateTheater(theater);
             await _repo.SaveAsync();
 
-            var seats = new List<Seat>();
-            int row = 0;
-            foreach (var seat in rows)
-            {
-                row++;
-                for (int i = 1; i <= seat; i++)
-                {
-                    seats.Add(new Seat() { Number = i, Row = row, TheaterId = theater.Id });
-                }
-            }
-            _repo.Seats.Create(seats);
+            _repo.Seats.CreateSeats(rows, theater.Id);
             await _repo.SaveAsync();
 
             return Ok();

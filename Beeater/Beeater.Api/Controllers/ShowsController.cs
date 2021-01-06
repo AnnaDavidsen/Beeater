@@ -72,10 +72,7 @@ namespace Beeater.Api.Controllers
         [HttpGet("movieid/{movieid}")]
         public async Task<ActionResult<IEnumerable<Show>>> GetShowByMovieId(int movieId)
         {
-            var shows = await _repo.Shows
-                .Include(x => x.Theater)
-                .Where(s => s.MovieId == movieId)
-                .ToListAsync();
+            var shows = await _repo.Shows.GetShowsByMovieId(movieId);
 
             return Ok(shows);
         }
@@ -83,19 +80,14 @@ namespace Beeater.Api.Controllers
         [HttpGet("title/{title}")]
         public async Task<ActionResult<IEnumerable<Show>>> GetShowByMovieTitle(string title)
         {
-            var shows = await _repo.Shows
-                .FindByCondition(s => _repo.Movies.FindAll()
-                    .Any(m => title == m.Title))
-                .ToListAsync();
+            var shows = await _repo.Shows.GetShowsByMovieTitle(title);
 
             return Ok(shows);
         }
         [HttpGet("theater/{theaterId}")]
         public async Task<ActionResult<IEnumerable<Show>>> GetShowsByTheaterId(int theaterId)
         {
-            var shows = await _repo.Shows
-                .FindByCondition(s => s.TheaterId == theaterId)
-                .ToListAsync();
+            var shows = await _repo.Shows.GetShowsByTheaterId(theaterId);
 
             return Ok(shows);
         }
@@ -103,22 +95,11 @@ namespace Beeater.Api.Controllers
         [HttpGet("seatstatus/{showId}")]
         public async Task<ActionResult<object>> GetShowWithSeatsAndSeatStatus(int showId)
         {
-            var show = await _repo.Shows
-                .Include(x => x.Theater, x => x.Theater.Seats)
-                .FirstOrDefaultAsync(x => x.Id == showId);
-
-            var bookings = await _repo.Bookings
-                .FindByCondition(x => x.ShowId == showId)
-                .ToListAsync();
+            var show = await _repo.Shows.GetShowWithSeatsAndSeatStatus(showId);
 
             if (show!=null)
             {
-                return new
-                {
-                    id = show.Id,
-                    seats = show.Theater.Seats.Select(x => new { x.Id, x.Row, x.Number }),
-                    occupiedSeats = bookings.Select(x => x.SeatId)
-                }; 
+                return Ok(show);
             }
             else
             {

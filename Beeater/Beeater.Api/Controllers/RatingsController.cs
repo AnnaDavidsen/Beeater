@@ -72,16 +72,15 @@ namespace Beeater.Api.Controllers
         [HttpGet("movie/{movieId}")]
         public async Task<ActionResult<IEnumerable<Rating>>> GetAllRatingsForMovie(int movieId)
         {
-            var ratings = await _repo.Ratings.FindByCondition(x => x.MovieId == movieId).ToListAsync();
+            var ratings = await _repo.Ratings.GetAllRatingsForMovie(movieId);
 
-            return ratings;
+            return Ok(ratings);
         }
 
         [HttpGet("user/{userId}/movie/{movieId}")]
         public async Task<ActionResult<Rating>> GetRatingByUserAndMovieId(string userId, int movieId)
         {
-            var rating = await _repo.Ratings.FindByCondition(x => x.UserId == userId && x.MovieId == movieId)
-                .FirstOrDefaultAsync();
+            var rating = await _repo.Ratings.GetRatingByUserAndMovieId(userId, movieId);
 
             if (rating != null)
                 return Ok(rating);

@@ -71,53 +71,21 @@ namespace Beeater.Api.Controllers
         [HttpGet("withgenre")]
         public async Task<ActionResult<IEnumerable<object>>> GetMoviesWithGenre()
         {
-            var movies =  _repo.Movies.FindAll();
-
-            var a = await movies.Join(_repo.Genres.FindAll(),
-                m => m.GenreId,
-                g => g.Id,
-                (m, g) => new { movie = m, genre = g })
-                .ToListAsync();
-
-            return a;
+            var movies = await _repo.Movies.GetMoviesWithGenre();
+            return Ok(movies);
         }
 
         [HttpGet("withgenre/genretitle/{genre}/{title}")]
         public async Task<ActionResult<IEnumerable<object>>> GetMoviesWithGenreByGenreAndTitle(string genre, string title)
         {
-            var movies = _repo.Movies.FindAll()
-                        .Include(x => x.Shows)
-                        .Where(x => x.Shows.Count > 0);
-
-            var a = await movies.Join(_repo.Genres.FindAll(),
-                    m => m.GenreId,
-                    g => g.Id,
-                    (m, g) => new { movie = m, genre = g }
-                    ).Where(mg =>
-                    (mg.movie.Title.ToLower().Contains(title.ToLower())
-                    || title.ToLower() == "_all_")
-                    && (mg.genre.Name.ToLower() == genre.ToLower()
-                    || genre.ToLower() == "_all_")
-                )
-                .ToListAsync();
-
-            var upcoming = new List<object>();
-
-            foreach (var item in a)
-            {
-                if (item.movie.Shows.Any(x => x.ShowTime > DateTime.Now))
-                    upcoming.Add(item);
-            }
-
-            return Ok(upcoming);
+            var movies = await _repo.Movies.GetMoviesWithGenreByGenreAndTitle(genre, title);
+            return Ok(movies);
         }
 
         [HttpGet("title/{title}")]
         public async Task<ActionResult<Movie>> GetMovieByTitle(string title)
         {
-            var movie = await _repo.Movies
-                .FindByCondition(x => x.Title.ToLower() == title.ToLower())
-                .FirstOrDefaultAsync();
+            var movie = await _repo.Movies.GetMovieByTitle(title);
 
             if (movie != null)
                 return Ok(movie);
@@ -129,10 +97,7 @@ namespace Beeater.Api.Controllers
         [HttpGet("{id}/detailed")]
         public async Task<ActionResult<Movie>> GetMovieByIdDetailed(int id)
         {
-            var movie = await _repo.Movies
-                .Include(x => x.Trailers, x => x.Ratings)
-                .Where(x => x.Id == id)
-                .FirstOrDefaultAsync();
+            var movie = await _repo.Movies.GetMovieDetailed(id);
 
             if (movie != null)
                 return Ok(movie);
@@ -144,7 +109,7 @@ namespace Beeater.Api.Controllers
         [HttpGet("genre/{genreId}")]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMoviesByGenreId(int genreId)
         {
-            var movies = await _repo.Movies.FindByCondition(x => x.GenreId == genreId).ToListAsync();
+            var movies = await _repo.Movies.GetMoviesByGenreId(genreId);
 
             return Ok(movies);
         }
@@ -152,24 +117,9 @@ namespace Beeater.Api.Controllers
         [HttpGet("upcoming")]
         public async Task<ActionResult<IEnumerable<object>>> GetMoviesWithUpcomingShows()
         {
-            var movies = await _repo.Movies
-                .Include(x => x.Shows)
-                .Where(x => x.Shows.Count > 0)
-                .Join(_repo.Genres.FindAll(),
-                    m => m.GenreId,
-                    g => g.Id,
-                    (m, g) => new { movie = m, genre = g })
-                .ToListAsync();
+            var movies = await _repo.Movies.GetMoviesWithUpcomingShows();
 
-            var upcoming = new List<object>();
-
-            foreach (var item in movies)
-            {
-                if (item.movie.Shows.Any(x => x.ShowTime > DateTime.Now))
-                    upcoming.Add(item);
-            }
-
-            return Ok(upcoming);
+            return Ok(movies);
         }
 
     }
