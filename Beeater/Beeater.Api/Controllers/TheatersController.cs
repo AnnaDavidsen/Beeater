@@ -23,16 +23,16 @@ namespace Beeater.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Seat>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Theater>>> GetAll()
         {
-            var entities = await _repo.Seats.FindAll().ToListAsync();
+            var entities = await _repo.Theaters.FindAll().ToListAsync();
             return Ok(entities);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Seat>> GetById(int id)
+        public async Task<ActionResult<Theater>> GetById(int id)
         {
-            var entity = await _repo.Seats.FindByCondition(x => x.Id == id).FirstOrDefaultAsync();
+            var entity = await _repo.Theaters.FindByCondition(x => x.Id == id).FirstOrDefaultAsync();
 
             if (entity != null)
                 return Ok(entity);
@@ -42,9 +42,9 @@ namespace Beeater.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] IEnumerable<Seat> entities)
+        public async Task<ActionResult> Post([FromBody] IEnumerable<Theater> entities)
         {
-            _repo.Seats.Create(entities);
+            _repo.Theaters.Create(entities);
             await _repo.SaveAsync();
 
             return Ok(entities);

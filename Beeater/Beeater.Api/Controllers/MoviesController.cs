@@ -85,7 +85,9 @@ namespace Beeater.Api.Controllers
         [HttpGet("withgenre/genretitle/{genre}/{title}")]
         public async Task<ActionResult<IEnumerable<object>>> GetMoviesWithGenreByGenreAndTitle(string genre, string title)
         {
-            var movies = _repo.Movies.FindAll();
+            var movies = _repo.Movies.FindAll()
+                        .Include(x => x.Shows)
+                        .Where(x => x.Shows.Count > 0);
 
             var a = await movies.Join(_repo.Genres.FindAll(),
                     m => m.GenreId,
@@ -99,7 +101,15 @@ namespace Beeater.Api.Controllers
                 )
                 .ToListAsync();
 
-            return a;
+            var upcoming = new List<object>();
+
+            foreach (var item in a)
+            {
+                if (item.movie.Shows.Any(x => x.ShowTime > DateTime.Now))
+                    upcoming.Add(item);
+            }
+
+            return Ok(upcoming);
         }
 
         [HttpGet("title/{title}")]
